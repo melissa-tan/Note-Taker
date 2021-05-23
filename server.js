@@ -3,6 +3,7 @@ const fs = require("fs");
 const express = require("express");
 const app = express();
 const { v4: uuidv4 } = require('uuid');
+const { LOADIPHLPAPI } = require("dns");
 
 
 const PORT = process.env.PORT || 3000;
@@ -54,12 +55,11 @@ app.post("/api/notes", (req, res) => {
     res.json(newNote)
 });
 
-app.delete("api/notes/:id", async (req, res) => {
+app.delete("/api/notes/:id", async (req, res) => {
     const remove = req.params.id;
-    parsedNotes = [].concat(JSON.parse(fileData))
-    const filteredNotes = parsedNotes.filter((note) => note.id !== remove );
-    finalNotes = JSON.stringify(filteredNotes)
-    fs.writeFile(sendFile, finalNotes, (error) =>{
+    savedData = savedData.filter((note) => note.id !== remove);
+    finalNotes = JSON.stringify(savedData)
+    fs.writeFile(saveFile, finalNotes, (error) =>{
         if (error) {
             throw error;
         }
